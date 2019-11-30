@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="js/jquery.qrcode.min.js"></script>
+
+	<body>
+		<div id="code"></div>
+		<br>
+		<div class="qrcode"></div>
+	
+	</body>
+
+	<script>
+		//$('#code').qrcode("http://www.baidu.com"); //任意字符串 
+
+		$("#code").qrcode({
+			render: "table", //table方式 
+			width: 300, //宽度 
+			height: 300, //高度 
+			text: "http://facepay.gzgxkj.com/profile/program/canteen?mid=228&tid=1197449865559277568" //任意内容 
+		});
+		
+		var url = window.location.href;
+		jQuery('.qrcode').qrcode(url);
+	</script>
+
+</html>

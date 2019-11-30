@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+
+	<body>
+		<button onclick="test()">点击</button>
+	</body>
+
+	<script>
+		//todo 1.将同名的规格放入同一个list中
+		function classification(objects) {
+            var result = objects.reduce(function(groups, item) {
+                var groupFound = groups.find(function(arrItem) {
+                    return item.name === arrItem.name;
+                });
+                if(groupFound) {
+                    if(groupFound.value.indexOf(item.value) == -1) {
+                        //去重
+                        groupFound.value.push(item.value);
+                    }
+                } else {
+                    //不要直接在原来的对象修改，新建对象
+                    var newGroup = {
+                        name: item.name,
+                        value: [item.value]
+                    };
+                    groups.push(newGroup);
+                }
+                return groups;
+            }, []);
+            return result;
+        }
+
+        //todo 2.将多维list重新组合
+        function combination(arr) {
+            var sarr = [
+                []
+            ];
+            var result = [];
+            for(var i = 0; i < arr.length; i++) {
+                var tarr = [];
+                for(var j = 0; j < sarr.length; j++) {
+                    for(var k = 0; k < arr[i].length; k++) {
+                        tarr.push(sarr[j].concat(arr[i][k]));
+                    }
+                }
+                sarr = tarr;
+            }
+            for(var m = 0; m < sarr.length; m++) {
+                result.push(sarr[m].join(','));
+            }
+            return result;
+        }
+		
+		
+		// 点击测试方法
+        function test() {
+            
+            var objects = [
+                {name:'分量', value:'大份'},
+                {name:'分量', value:'中份'},
+                {name:'分量', value:'小份'},
+                {name:'味道', value:'特辣'},
+                {name:'味道', value:'中辣'},
+                {name:'味道', value:'微辣'},
+                {name:'配菜', value:'牛肉'},
+                {name:'配菜', value:'猪肉'}
+            ];
+			
+            var garr = classification(objects);
+
+            //将garr
+            var arr = [];
+            if(garr != null && garr.length > 0){
+                for ( var i = 0; i < garr.length; i++) {
+                    arr[i] = garr[i].value;
+                }
+            }
+            var result = combination(arr);
+            console.log(garr);
+            console.log(arr);
+            console.log(result);
+        }
+		
+	</script>
+
+</html>

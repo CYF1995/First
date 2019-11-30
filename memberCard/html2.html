@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script src="js/jquery-2.1.0.js"></script>
+	<script>
+		wx.config({
+		  debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		  appId: 'wx20e7b370393db33a', // 必填，公众号的唯一标识
+		  timestamp: 1573282594, // 必填，生成签名的时间戳
+		  nonceStr: '4ac9fa56-ae2e-4824-acdd-e1ac430bf082', // 必填，生成签名的随机串
+		  signature: '47b4141cdde6d21bc370de88c578145627a3122c',// 必填，签名
+		  jsApiList: [
+		  		'addCard'
+		  ] // 必填，需要使用的JS接口列表
+		});
+		
+		
+		wx.ready(function() {
+			var openId = "oNra50osR7SwrLG3Og7EX2cfzIlM";
+			var cardId = "pnkoB1OIS0s5a6sEJwXWRscnxkrY";
+			//添加卡券
+			$('#addCard').click(function() {
+				console.log("进来了");
+				$.ajax({
+					type: "post",
+					url: 'http://test.admin.knengda.cn/hdw/v1/wxFace/receiveCard',
+					data: {
+						openId: openId,
+						cardId: cardId
+					},
+					dataType: 'text',
+					success: function(data) {
+						console.log("data-------" + data);
+						wx.addCard({
+							cardList: [{
+								cardId: cardId,
+								cardExt: data.data
+							}],
+							success: function(res) {
+								console.log("res----" + res);
+								alert('已添加卡券：' + JSON.stringify(res.cardList));
+							},
+							cancel: function(res) {
+								alert(JSON.stringify(res));
+							},
+							failure: function(res) {
+								alert(JSON.stringify(res));
+							}
+						})
+					}
+				})
+			})
+		})
+	</script>
+
+	<body>
+		<h3 id="menu-card">微信卡券接口</h3>
+		<span class="desc">批量添加卡券接口</span>
+		<button class="btn btn_primary" id="addCard">addCard</button>
+		
+	</body>
+
+</html>

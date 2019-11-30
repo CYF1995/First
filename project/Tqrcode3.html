@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="js/jquery.qrcode.min.js"></script>
+
+	<body>
+		<div id="code"></div>
+		<!-- 提供一个div来存放生成的二维码 -->
+		<button οnclick="downLoadCode()"><span>下载二维码</span></button>
+	</body>
+
+	<script>
+		//方法一
+		$('#code').qrcode("http://www.baodu.com"); //任意字符串
+		//方法二
+		//		$("#code").qrcode({
+		//			render: "table", //table方式
+		//			width: 200, //宽度
+		//			height: 200, //高度
+		//			text: "hello Word" //任意内容
+		//		});
+
+		$(function() {
+			$('button').click(function() {
+				var url = "www.m1905.com"
+				console.log("下载！");
+				var img = $('#qrcode').children('img').attr("src");
+				var alink = document.createElement("a");
+				alink.href = img;
+				alink.download = "测试.png";
+				alink.click();
+			})
+		})
+
+		function downLoadCode() {
+
+		}
+	</script>
+
+</html>

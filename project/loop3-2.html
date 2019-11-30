@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+
+	<body>
+		<button onclick="loop()">点击</button>
+	</body>
+
+	<script>
+		function loop() {
+			var objects = [
+			  {name:'分量', value:'大份'},
+			  {name:'分量', value:'中份'},
+			  {name:'分量', value:'小份'},
+			  {name:'味道', value:'特辣'},
+			  {name:'味道', value:'中辣'},
+			  {name:'味道', value:'微辣'}
+			];
+
+
+
+			var result = objects.reduce(function(groups, item) {
+				var groupFound = groups.find(function(arrItem) {
+					return item.name === arrItem.name;
+				});
+				if(groupFound) {					
+					if(groupFound.value.indexOf(item.value) == -1) {
+						//去重
+						groupFound.value.push(item.value);
+					}
+				} else {
+					//不要直接在原来的对象修改，新建对象
+					var newGroup = {
+						name: item.name,
+						value: [item.value]
+					};
+					groups.push(newGroup);
+				}
+				return groups;
+			}, []);
+
+			console.log(result);
+		}
+	</script>
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品增加、减少</title>
+	</head>
+
+	<body>
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+		<html xmlns="http://www.w3.org/1999/xhtml">
+
+		<head>
+
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+			<title>购物车</title>
+			<script>
+				function add(addObj) {
+
+					//获取当前节点的父节点td
+
+					var tdObj = addObj.parentNode;
+
+					//循环td节点下的所有节点，以找到记录数量的文本节点
+
+					for(var i = 0; i < tdObj.childNodes.length; i++) {
+
+						var inputObj = tdObj.childNodes[i];
+
+						if(inputObj.nodeName == 'INPUT' && inputObj.type == 'text') {
+
+							//获取文本节点下的值并执行自增，再赋值给文本框
+
+							var val = inputObj.value;
+
+							val++;
+
+							inputObj.value = val;
+
+						}
+
+					}
+
+					total();
+
+				}
+
+				function sub(subObj) {
+					var tdObj = subObj.parentNode;
+					for(var i = 0; i < tdObj.childNodes.length; i++) {
+						var inputObj = tdObj.childNodes[i];
+						if(inputObj.nodeName == 'INPUT' && inputObj.type == 'text') {
+							var val = inputObj.value;
+							//减到0的时候不允许再减
+							if(val > 0) {
+								val--;
+							}
+							inputObj.value = val;
+
+						}
+
+					}
+					total();
+
+				}
+
+				function total() {
+					var total = 0;
+					//获取table对象
+					var tableObj = document.getElementById("table");
+					//获取tr节点列表
+					var trObj = tableObj.getElementsByTagName("tr");
+					//从第二行开始循环
+					for(var i = 1; i < trObj.length; i++) {
+						//获取td节点列表
+						var tdObj = trObj[i].getElementsByTagName("td");
+						//获取单价
+						var price = tdObj[1].innerHTML;
+						//获取数量
+						var num = tdObj[2].getElementsByTagName("input")[1].value;
+						var sum = parseFloat(price) * parseFloat(num);
+						tdObj[3].innerHTML = sum.toFixed(2);
+						//总计
+						total += sum;
+					}
+
+					document.getElementById("total").innerHTML = total.toFixed(2);
+
+				}
+			</script>
+
+		</head>
+
+		<body>
+
+			<table id="table" border="1" align="center" style="text-align:center">
+
+				<tr>
+					<td>产品</td>
+					<td>单价</td>
+
+					<td>数量</td>
+
+					<td>小计</td>
+
+				</tr>
+
+				<tr>
+
+					<td>冻冻果</td>
+
+					<td>10.00</td>
+
+					<td>
+
+						<input type="button" value="+" onclick="add(this);" />
+
+						<input style="width:20px;" type="text" readonly="readonly" value="1" />
+
+						<input type="button" value="-" onclick="sub(this);" />
+
+					</td>
+
+					<td>10.00</td>
+
+				</tr>
+
+				<tr>
+
+					<td>冰绿茶</td>
+
+					<td>3.00</td>
+
+					<td>
+
+						<input type="button" value="+" onclick="add(this);" />
+
+						<input type="text" style="width:20px;" readonly="readonly" value="1" />
+
+						<input type="button" value="-" onclick="sub(this);" />
+
+					</td>
+
+					<td>3.00</td>
+
+				</tr>
+
+			</table>
+
+			<div align="center">
+
+				总计:<span id="total">13.00</span>
+
+			</div>
+
+		</body>
+
+		</html>
+	</body>
+
+</html>

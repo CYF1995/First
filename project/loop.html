@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script src="js/jquery-2.1.0.js"></script>
+
+	<body>
+
+	</body>
+
+	<script>
+		var textArr = [
+			['a', 'b', 'c'],
+			['d', 'e', 'f', 'g'],
+			['h', 'i']
+		];
+		var getCombination = function getCombination(array) {
+			var resultArry = [];
+			array.forEach(function(arrItem) {
+				if(resultArry.length === 0) {
+					resultArry = arrItem;
+				} else {
+					(function() {
+						var emptyArray = [];
+						resultArry.forEach(function(item) {
+							arrItem.forEach(function(value) {
+								emptyArray.push([item, value]);
+							});
+						});
+						resultArry = emptyArray;
+					})();
+				}
+			});
+			return resultArry;
+		};
+		console.log(getCombination(textArr));
+	</script>
+
+</html>

@@ -1,0 +1,32 @@
+地址： https://gitee.com/time_second/gx-facepay.git
+
+清除信息：git config --system --unset credential.helper
+保存登陆信息(登陆后可保存)：git config --global credential.helper store
+
+---------本地
+查看分支：git branch
+
+创建分支：git branch <name>
+
+切换分支：git checkout <name>
+
+创建+切换分支：git checkout -b <name>
+
+合并某分支到当前分支：git merge <name>	
+
+删除分支：git branch -d <name>
+
+---------远程
+创建本地分支并与分支同步：git checkout -b gxPay origin/gxPay
+查看git远程分支：git remote -v
+
+-----Git提交代码
+git remoute
+查看当前状态：git status
+1.添加：git add .
+2.备注：git commit -m "添加"
+3.将本地的库链接到远程库：git remote add origin https://gitee.com/time_second/gx-facepay.git
+4.提交代码1-1(取回远程主机某个分支的更新，再与本地的指定分支合并)：git pull origin gxPay
+5.提交代码1-2(把当前提交到git本地仓库的代码推送到远程主机的某个远程分之上)：git push origin gxPay  
+
+查看冲突：git diff

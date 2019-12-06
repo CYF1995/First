@@ -29,6 +29,8 @@
 				var groupFound = groups.find(function(arrItem) {
 					return item.name === arrItem.name;
 				});
+                console.log("groupFound==",groupFound);
+
 				if(groupFound) {
 					groupFound.usedCount += item.usedCount;
 					if(groupFound.color.indexOf(item.color) == -1) {

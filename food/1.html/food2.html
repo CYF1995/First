@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/jquery-2.1.0.js" ></script>
+		<script type="text/javascript" src="../js/jquery.tagsinput.js"></script>
+		<link href="../css/bootstrap.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.tagsinput {
+				border: 1px solid #CCC;
+				background: #FFF;
+				padding: 5px;
+				width: 100%;
+				min-width: 760px;
+				height: 50px;
+			}
+			
+			.tagsinput span.tag {
+				border: 1px solid #a5d24a;
+				-moz-border-radius: 2px;
+				-webkit-border-radius: 2px;
+				display: block;
+				float: left;
+				padding: 5px;
+				text-decoration: none;
+				background: #cde69c;
+				color: #638421;
+				margin-right: 5px;
+				margin-bottom: 5px;
+				font-family: helvetica;
+				font-size: 13px;
+			}
+			
+			.tagsinput span.tag a {
+				font-weight: bold;
+				color: #82ad2b;
+				text-decoration: none;
+				font-size: 11px;
+			}
+			
+			.tagsinput input {
+				width: 80px;
+				margin: 0px;
+				font-family: helvetica;
+				font-size: 13px;
+				border: 1px solid transparent;
+				padding: 5px;
+				background: transparent;
+				color: #000;
+				outline: 0px;
+				margin-right: 5px;
+				margin-bottom: 5px;
+			}
+			
+			.tagsinput div {
+				display: block;
+				float: left;
+			}
+			
+			.tags_clear {
+				clear: both;
+				width: 100%;
+				height: 0px;
+			}
+			
+			.not_valid {
+				background: #FBD8DB !important;
+				color: #90111A !important;
+			}
+			
+			.form {
+				font-size: 14px;
+				color: #333333;
+				border-width: 1px;
+				border-color: #ddd;
+				margin-top: 30px;
+				border-collapse: collapse;
+			}
+			
+			.form th {
+				border-width: 1px;
+				padding: 10px 10px;
+				border-style: solid;
+				border-color: #ddd;
+				color: #333;
+				background-color: #eaeaea;
+			}
+		</style>
+
+	</head>
+
+	<body>
+
+		<table class="table" id="content1">
+			<tr>
+				<td class='td_Num' style='width:80px;'>
+					序号
+				</td>
+				<td class='td_Item'>
+					规格名称
+				</td>
+				<td class='td_Item'>
+					规格值
+				</td>
+			</tr>
+		</table>
+		<a href="#" οnclick="add_line();" class="btn btn-primary dropdown-text">添加</a>
+		<input type="hidden" value="" id="nametags">
+		<input type="hidden" value="" id="valuetags">
+		<table id="content" class="table">
+			<tr>
+				<th>
+					商品编码
+				</th>
+				<th>
+					商品条码
+				</th>
+				<th>
+					售价
+				</th>
+				<th>
+					成本价
+				</th>
+				<th>
+					重量
+				</th>
+			</tr>
+		</table>
+
+		<input type="button" value="生成数据" id="btnSubmit" οnclick="SaveData()" class="btn btn-primary dropdown-text" />
+		<div id="datalist">
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	var currentStep = 0;
+	var max_line_num = 0;
+	//添加新记录
+	function add_line() {
+		alert("点击");
+		max_line_num = $("#content1 tr:eq(1)").children("td").html();
+		if(max_line_num == null) {
+			max_line_num = 1;
+		} else {
+			max_line_num = parseInt(max_line_num);
+			max_line_num += 1;
+		}
+		if($("#content1 tr").length > 2) {
+			alert("最多添加两个规格");
+			return false;
+		}
+		$('#content1').append(
+			"<tr id='line" + max_line_num + "'>" +
+			"<td class='td_Num' >" + max_line_num + "</td>" +
+			"<td class='td_Item' style='width:160px;'><input type='text'  οnkeyup='keyupname(this);' class='form-control' value='规格" + max_line_num + "' data='" + max_line_num + "'></input></td>" +
+			"<td class='td_Item'><input type='text' class='form-control' id='tags_" + max_line_num + "' data='规格" + max_line_num + "' ></td>" +
+			"<td class='td_Oper'>" +
+			"<span οnclick='remove_line(this);'>删除</span> " +
+			"</td>" +
+			"</tr>");
+		var textdata = $('#content1 tr:eq(' + max_line_num + ')').find("td:eq(1)").find("input").val();
+		if(max_line_num == 1) {
+			$("#content tr:eq(0)").prepend("<th datar='" + max_line_num + "'>" + textdata + "</th>");
+		} else {
+			$("#content tr:eq(0)").find("th:first").after("<th datar='" + max_line_num + "'>" + textdata + "</th>");
+		}
+		if(max_line_num < 2) {
+			var firstTr = $("#content").find('tbody>tr:last');
+			var row = $("<tr class='sku_table_tr'></tr>");
+			var td = $("<td class='formValue' data='1'></td><td class='formValue'><input type='text' class='form-control' name='sku_Id' readonly='readonly' value='系统生成'></td><td class='formValue'><input type='text' class='form-control' name='sku_code' ></td><td class='formValue'><input type='text' class='form-control' name='sku_price' ></td><td class='formValue'><input type='text' class='form-control' name='sku_jinjia' ></td><td class='formValue'><input type='text' class='form-control' name='sku_weight' ></td>");
+			row.append(td);
+			$("#content").append(row);
+		} else {
+			for(var i = 1; i < $("#content tr").length; i++) {
+				$("#content tr:eq(" + i + ")").find("td:first").after("<td class='formValue' data='2'></td>");
+			};
+		}
+		$('#tags_' + max_line_num + '').tagsInput({
+			width: 'auto'
+		});
+	}
+
+	function keyupname(argument) {
+		var name = $(argument).val();
+		var olddata = $(argument).attr("data");
+		$("#content tr:eq(0)").find("th").each(function() {
+			if($(this).attr("datar") == olddata) {
+				$(this).html(name);
+			}
+		});
+	}
+
+	function remove_line(index) {
+		if(index != null) {
+			currentStep = $(index).parent().parent().find("td:eq(0)").html();
+		}
+		if(currentStep == 0) {
+			alert('请选择一项!');
+			return false;
+		}
+
+		if(confirm("确定要删除改记录吗？")) {
+
+			$("#content1 tr").each(function() {
+				var seq = parseInt($(this).children("td").html());
+				if(seq == currentStep) {
+					$(this).remove();
+				}
+				if(seq > currentStep) {
+					$(this).children("td").each(function(i) {
+						if(i == 0) $(this).html(seq - 1);
+					});
+				}
+			});
+			var thname = $(index).parent().parent().find("td:eq(1)").find("input").attr("data");
+			if(currentStep == 1) {
+				$("#content tr:first").find("th:eq(0)").remove();
+			} else {
+				$('#tags_1').tagsInput({
+					width: 'auto',
+					del: 2
+				});
+			}
+			if(currentStep == 2) {
+				$("#content tr:first").find("th:eq(1)").remove();
+			} else {
+				$('#tags_2').tagsInput({
+					width: 'auto',
+					del: 1
+				});
+			}
+			$("tr[class='sku_table_tr']").find("td").each(function() {
+				if(thname == $(this).attr("data")) {
+					$(this).remove();
+				}
+			});
+		}
+	}
+	//保存数据
+	function SaveData() {
+		var alreadySetSkuVals = [];
+		//获取设置的SKU属性值
+
+		$("tr[class='sku_table_tr']").each(function() {
+			var propvalids = $(this).find("input[type='text'][name='sku_Id']").parent().prev().prev().html() + "," + $(this).find("input[type='text'][name='sku_Id']").parent().prev().prev().attr("data") + ";" + $(this).find("input[type='text'][name='sku_Id']").parent().prev().html() + "," + $(this).find("input[type='text'][name='sku_Id']").parent().prev().attr("data"); // 
+			var propnames = $("#content tr:eq(0)").find("th:eq(0)").html() + "," + $("#content tr:eq(0)").find("th:eq(0)").attr("datar") + ";" + $("#content tr:eq(0)").find("th:eq(1)").html() + "," + $("#content tr:eq(0)").find("th:eq(1)").attr("datar")
+			$("#datalist").html(propvalids);
+		});
+
+	}
+</script>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+
+	<body>
+		<div>
+			<div>
+				<table id="dataTable" border="1">
+					<tr>
+						<td>口味</td>
+						<td>分量</td>
+						<td>加料</td>
+						<td>价格</td>
+					</tr>
+					<tr>
+						<td rowspan="4">特辣</td>	
+						<td rowspan="2">多</td>
+						<td>牛肉</td>
+						<td><input type="text"  name="特辣,多,牛肉" value="50"/></td>
+					</tr>
+					<tr>
+						<td>猪肉</td>
+						<td><input type="text"  name="特辣,多,猪肉" value="40"/></td>
+					</tr>
+					<tr>
+						<td rowspan="2">少</td>
+						<td>牛肉</td>
+						<td><input type="text"  name="特辣,少,牛肉" value="30"/></td>
+					</tr>
+					<tr>
+						<td>猪肉</td>
+						<td><input type="text"  name="特辣,少,猪肉" value="20"/></td>
+					</tr>
+					
+					<tr>
+						<td rowspan="4">中辣</td>	
+						<td rowspan="2">多</td>
+						<td>牛肉</td>
+						<td><input type="text"  name="中辣,多,牛肉" value="10"/></td>
+					</tr>
+					<tr>
+						<td>猪肉</td>
+						<td><input type="text"  name="中辣,多,猪肉" value="9"/></td>
+					</tr>
+					<tr>
+						<td rowspan="2">少</td>
+						<td>牛肉</td>
+						<td><input type="text"  name="中辣,少,牛肉" value="8"/></td>
+					</tr>
+					<tr>
+						<td>猪肉</td>
+						<td><input type="text"  name="中辣,少,猪肉" value="7"/></td>
+					</tr>
+						
+				</table>
+			</div>
+		</div>
+
+	</body>
+
+	<script>
+		$(function() {
+			var table = document.getElementById("dataTable");
+		
+			//测试
+			var tableList = $(table).find("input[type='text']");
+			console.log(tableList);
+			
+			var foodProductList = [];
+			
+			$.each(tableList,function(index,item){
+				var name = $(item).context.name;
+				var names= new Array();
+				names = name.split(",")
+                foodProductList.push({
+                    specifications: names,
+                    price: $(item).val()
+                })
+            })
+			console.log(foodProductList);
+			
+			$(document).on('change', 'input', function() {
+                alert("改变了");
+            });
+		})
+	</script>
+
+</html>

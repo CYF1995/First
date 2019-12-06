@@ -13,20 +13,19 @@
 
 	<script>
 		function loop() {
-			var objects = [
-			  {name:'分量', value:'大份'},
-			  {name:'分量', value:'中份'},
-			  {name:'分量', value:'小份'},
-			  {name:'味道', value:'特辣'},
-			  {name:'味道', value:'中辣'},
-			  {name:'味道', value:'微辣'}
-			];
+			var objects = 
+			  [{specification:'分量', value:'大份'},
+				{specification:'分量', value:'中份'},
+				{specification:'分量', value:'小份'},
+				{specification:'味道', value:'特辣'},
+				{specification:'味道', value:'中辣'},
+				{specification:'味道', value:'微辣'}];
 			
-			  
+			
 
 			var result = objects.reduce(function(groups, item) {
 				var groupFound = groups.find(function(arrItem) {
-					return item.name === arrItem.name;
+					return item.specification === arrItem.specification;
 				});
 				if(groupFound) {					
 					if(groupFound.value.indexOf(item.value) == -1) {
@@ -36,7 +35,7 @@
 				} else {
 					//不要直接在原来的对象修改，新建对象
 					var newGroup = {
-						name: item.name,
+						specification: item.specification,
 						value: [item.value]
 					};
 					groups.push(newGroup);

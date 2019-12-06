@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="text/javascript" src="../js/jquery-2.1.0.js" ></script>
+	<body>
+
+		<!-- 单一规格 -->
+		<div style="border: 1px solid #e0e0e0;border-radius: 10px; margin-bottom: 10px;width: 100%" id="singleDiv">
+			<div class="control-group form-group">
+				<label for="优惠价格" class="col-md-2 control-label">优惠价格</label>
+				<div class="col-md-9">
+					<input type="text" name="price" value="${price}" class="form-control" style="width: 20%" />
+				</div>
+			</div>
+			<div class="control-group form-group">
+				<label for="原价格" class="col-md-2 control-label">原价格</label>
+				<div class="col-md-9">
+					<input type="text" name="oldPrice" value="${oldPrice}" class="form-control" style="width: 20%" />
+				</div>
+			</div>
+		</div>
+
+		<!-- 多种规格 -->
+		<div style="border: 1px solid #e0e0e0;border-radius: 10px; margin-bottom: 10px;width: 100%;" id="variedDiv">
+			<div class="control-group form-group">
+				<label for="名称" class="col-md-2 control-label">名称</label>
+				<div class="col-md-9">
+					<input type="text" id="standardName" name="standardName" value="${standardName  }" class="form-control" style="width: 20%" />
+				</div>
+			</div>
+			<div class="standard_parent">
+				<c:forEach items="${dishesStandardList }" var="dishesStandard">
+					<div class="standard_class">
+						<div class="col-md-5 dishesParamClassList">
+							<label>规格：</label>
+							<input type="hidden" id="standardId" name="standardId" value="${dishesStandard.id }">
+							<input type="text" id="formName" name="formName" value="${dishesStandard.name }" class="form-control inputClassList" />
+						</div>
+						<div class="col-md-6 dishesParamClassList">
+							<label>价格：</label>
+							<input type="text" id="standardPrice" name="standardPrice" value="${dishesStandard.price }" class="form-control inputClassList" />元
+						</div>
+						<div class="dell_standard" style="margin-left: -10px; margin-top: -3px;" id="dellMonthCard">
+							<span class="title_name dell_dishesStandard" standardId="${dishesStandard.id }">删除</span>
+							<span class="konck_icon konck_i"></span>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+			<div class="standard_add">
+				<span class="title_name add_coupon">添加规格</span>
+				<span class="konck_icon konck_h"></span>
+			</div>
+		</div>
+
+		<!-- 附加菜品属性 -->
+		<div class="control-group form-group">
+			<label for="附加菜品属性" class="col-md-2 control-label">附加菜品属性</label>
+		</div>
+		<div style="border: 1px solid #e0e0e0;border-radius: 10px; margin-bottom: 10px;width: 100%;" id="dishesPropertyDiv">
+			<div class="assortment_all">
+				<c:if test="${dishesParamVOList !=null && dishesParamVOList.size() >0 }">
+					<c:forEach items="${dishesParamVOList }" var="dishesParamVO">
+						<div class="control-group assortment_small  border-bottom">
+							<label for="附加类名" class="col-md-2 control-label">附加类名</label>
+							<input type="hidden" id="paramId" name="paramId" value="${dishesParamVO.id }">
+							<div class="col-md-9 dishesParamClassList">
+								<input type="text" id="paramName" name="paramName" value="${dishesParamVO.name }" class="form-control" style="width: 70%" />
+							</div>
+							<div class="dell_assortment" style="margin-left: -10px; margin-top: -3px;" id="dellMonthCard">
+								<span class="title_name dell_dishesParam" paramId="${dishesParamVO.id }">删除</span>
+								<span class="konck_icon konck_i"></span>
+							</div>
+
+							<div class="dishesParam_parent">
+								<c:forEach items="${dishesParamVO.dishesParamItemList }" var="dishesParamItem">
+									<div class="activity_class">
+										<div class="col-md-4 nameClassList">
+											<label>
+                            附加属性
+                            </label>
+										</div>
+										<div class="col-md-5 dishesParamClassList">
+											<label>属性名称：</label>
+											<input type="hidden" id="itemId" name="itemId" value="${dishesParamItem.id }">
+											<input type="text" id="itemName" name="itemName" value="${dishesParamItem.name }" class="form-control inputClassList" />
+										</div>
+										<div class="col-md-6 dishesParamClassList">
+											<label>价格：</label>
+											<input type="text" id="itemAdditionPrice" name="itemAdditionPrice" value="${dishesParamItem.additionPrice }" class="form-control inputClassList" />元
+										</div>
+										<div class="dell_all" style="margin-left: -10px; margin-top: -3px;">
+											<span class="title_name dell_dishesItem" itemId="${dishesParamItem.id }">删除</span>
+											<span class="konck_icon konck_i"></span>
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+
+							<div class="operty_add">
+								<span class="title_name add_coupon">附加属性</span>
+								<span class="konck_icon konck_h"></span>
+							</div>
+						</div>
+					</c:forEach>
+				</c:if>
+			</div>
+			<div class="add_assortment_all">
+				<span class="title_name add_coupon">添加附加分类</span>
+				<span class="konck_icon konck_h"></span>
+			</div>
+		</div>
+	</body>
+
+	<script>
+		$(function() {
+			var standardType = '${standardType}'; //1单一规格 2多种规格 0无规格
+			if(standardType != null && standardType != "") {
+				if(standardType == 1) {
+					$("#singleDiv").show();
+					$("#variedDiv").hide();
+				} else if(standardType == 2) {
+					$("#singleDiv").hide();
+					$("#variedDiv").show();
+				} else if(standardType == 0) {
+					$("#singleDiv").show();
+					$("#variedDiv").hide();
+				}
+			} else {
+				$("#singleDiv").show();
+				$("#variedDiv").hide();
+			}
+
+			$("#subUpdate").click(function() {
+				var singleList = assembleClassName(); //附加菜品属性
+				var standardList = assembleStandard(); //规格
+				$("#singleList").val(singleList);
+				$("#standardList").val(standardList);
+				var newStandardType = $("#newStandardType").val();
+				if(newStandardType == 2) {
+					if(standardList == null || standardList == "" || standardList == "[]") {
+						alert("类型为选多规格时候规格参数必填");
+						return;
+					}
+				}
+				$.ajax({
+					url: "${requestScope['struts.actionMapping'].name}",
+					data: $("#form").serialize(),
+					type: "POST",
+					success: function() {
+						alert("保存成功");
+						parent.closeWin();
+					}
+				});
+			});
+			//动态添加附加属性
+			$('body').on('click', '.operty_add', function() {
+				var dishesParam = '<div class="activity_class">' +
+					'<div class="col-md-4 nameClassList">' +
+					'<label>附加属性</label>' +
+					'</div>' +
+					'<div class="col-md-5 dishesParamClassList">' +
+					'<label>属性名称：</label>' +
+					'<input type="hidden" id="itemId" name="itemId" value=""/>' +
+					'<input type="text" id="itemName" name="itemName" value="" class="form-control inputClassList"/>' +
+					'</div>' +
+					'<div class="col-md-6 dishesParamClassList">' +
+					'<label>价格：</label>' +
+					'<input type="text" id="itemAdditionPrice" name="itemAdditionPrice" value="" class="form-control inputClassList" />元' +
+					'</div>' +
+					'<div class="dell_all" style="margin-left: -10px; margin-top: -3px;" id="dellMonthCard">' +
+					'<span class="title_name dell_dishesItem" itemId="">删除</span>' +
+					'<span class="konck_icon konck_i"></span>' +
+					'</div>' +
+					'</div>';
+				$(this).prev().append(dishesParam);
+			});
+			//删除附加属性
+			$('body').on('click', '.dell_dishesItem', function() {
+				var current = $(this);
+				var itemId = $(this).attr("itemId");
+				if(itemId != null && itemId != "") {
+					$.ajax({
+						type: "post",
+						url: "<%=basePath %>book/dishes/backstageversion/update!deleteParamItemById",
+						data: {
+							"itemId": itemId
+						},
+						success: function(data) {
+							if(data.success) {
+								current.parent().parent().remove();
+							} else {
+								alert('抱歉删除失败')
+							}
+						}
+					});
+				} else {
+					$(this).parent().parent().remove();
+				}
+			});
+			//动态添加附加分类
+			$('body').on('click', '.add_assortment_all', function() {
+				var assortment = '<div class="control-group assortment_small border-bottom">' +
+					'<label for="附加类名" class="col-md-2 control-label">附加类名</label>' +
+					'<input type="hidden" id="paramId" name="paramId" value="" />' +
+					'<div class="col-md-9 dishesParamClassList">' +
+					'<input type="text" id="paramName" name="paramName" value="" class="form-control" style="width: 70%"/>' +
+					'</div>' +
+					'<div class="dell_assortment" style="margin-left: -10px; margin-top: -3px;" id="dellMonthCard">' +
+					'<span class="title_name dell_dishesParam" paramId="">删除</span>' +
+					'<span class="konck_icon konck_i"></span>' +
+					'</div>' +
+					'<div class="dishesParam_parent">' +
+					'<div class="activity_class">' +
+					'<div class="col-md-4 nameClassList">' +
+					'<label>附加属性</label>' +
+					'</div>' +
+					'<div class="col-md-5 dishesParamClassList">' +
+					'<label>属性名称：</label>' +
+					'<input type="hidden" id="itemId" name="itemId" value=""/>' +
+					'<input type="text" id="itemName" name="itemName" value="" class="form-control inputClassList"/>' +
+					'</div>' +
+					'<div class="col-md-6 dishesParamClassList">' +
+					'<label>价格：</label>' +
+					'<input type="text" id="itemAdditionPrice" name="itemAdditionPrice" value="" class="form-control inputClassList" />元' +
+					'</div>' +
+					'<div class="dell_all" style="margin-left: -10px; margin-top: -3px;" id="dellMonthCard">' +
+					'<span class="title_name dell_dishesItem" itemId="">删除</span>' +
+					'<span class="konck_icon konck_i"></span>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'<div class="operty_add">' +
+					'<span class="title_name add_coupon">附加属性</span>' +
+					'<span class="konck_icon konck_h"></span>' +
+					'</div>' +
+					'</div>';
+				$(this).prev().append(assortment);
+			});
+			//删除附加分类
+			$('body').on('click', '.dell_dishesParam', function() {
+				var current = $(this);
+				var paramId = $(this).attr("paramId");
+				if(paramId != null && paramId != "") {
+					$.ajax({
+						type: "post",
+						url: "<%=basePath %>book/dishes/backstageversion/update!deleteDishesParamById",
+						data: {
+							"paramId": paramId
+						},
+						success: function(data) {
+							if(data.success) {
+								current.parent().parent().remove();
+							} else {
+								alert('抱歉删除失败');
+							}
+						}
+					});
+				} else {
+					$(this).parent().parent().remove();
+				}
+
+			});
+
+			//组装附加菜品属性
+			var assembleClassName = function() {
+				var dishesId = $("#id").val(); //菜品ID
+				var dataParam = new Array();
+				//遍历分类
+				$(".assortment_small").each(function() {
+					var dishesParam = new Object();
+					var id = $(this).find("input[name='paramId']").val();
+					var name = $(this).find("input[name='paramName']").val();
+					dishesParam.id = id;
+					dishesParam.name = name;
+					dishesParam.dishesId = dishesId;
+					//遍历分类里面的附加属性
+					var subItem = new Array();
+					$(this).find(".activity_class").each(function() {
+						var dishesParamItem = new Object();
+						var itemId = $(this).find("input[name='itemId']").val();
+						var itemName = $(this).find("input[name='itemName']").val();
+						var itemAdditionPrice = $(this).find("input[name='itemAdditionPrice']").val();
+						dishesParamItem.id = itemId;
+						dishesParamItem.name = itemName;
+						dishesParamItem.additionPrice = itemAdditionPrice;
+						dishesParamItem.dishesParamId = dishesParam.id;
+						dishesParamItem.dishesId = dishesId;
+						subItem.push(dishesParamItem);
+					});
+					dishesParam.dishesParamItemList = subItem;
+					dataParam.push(dishesParam);
+				});
+				var singleList = JSON.stringify(dataParam);
+				return singleList;
+			};
+			//动态添加多种规格
+			$('body').on('click', '.standard_add', function() {
+				var standard = '<div class="standard_class">' +
+					'<div class="col-md-5 dishesParamClassList">' +
+					'<label>规格：</label>' +
+					'<input type="hidden" id="standardId" name="standardId" value="" />' +
+					'<input type="text" id="formName" name="formName" value="" class="form-control inputClassList"/>' +
+					'</div>' +
+					'<div class="col-md-6 dishesParamClassList">' +
+					'<label>价格：</label>' +
+					'<input type="text" id="standardPrice" name="standardPrice" value="" class="form-control inputClassList" />元' +
+					'</div>' +
+					'<div class="dell_standard" style="margin-left: -10px; margin-top: -3px;" id="dellMonthCard">' +
+					'<span class="title_name dell_dishesStandard" standardId="" >删除</span>' +
+					'<span class="konck_icon konck_i"></span>' +
+					'</div>' +
+					'</div>';
+				$(this).prev().append(standard);
+			});
+			//动态删除多种规格
+			$('body').on('click', '.dell_dishesStandard', function() {
+				var current = $(this);
+				var standardId = $(this).attr("standardId");
+				if(standardId != null && standardId != "") {
+					$.ajax({
+						type: "post",
+						url: "<%=basePath %>book/dishes/backstageversion/update!deleteDishesStandardById",
+						data: {
+							"standardId": standardId
+						},
+						success: function(data) {
+							if(data.success) {
+								current.parent().parent().remove();
+							} else {
+								alert('抱歉删除失败');
+							}
+						}
+					});
+				} else {
+					$(this).parent().parent().remove();
+				}
+
+			});
+			//组装多规格
+			var assembleStandard = function() {
+				var dishesId = $("#id").val(); //菜品ID
+				var dataParam = new Array();
+				$(".standard_class").each(function() {
+					var dishesStandard = new Object();
+					var id = $(this).find("input[name='standardId']").val();
+					var name = $(this).find("input[name='formName']").val();
+					var price = $(this).find("input[name='standardPrice']").val();
+					dishesStandard.id = id;
+					dishesStandard.name = name;
+					dishesStandard.price = price;
+					dishesStandard.dishesId = dishesId;
+					dataParam.push(dishesStandard);
+				});
+				var standardList = JSON.stringify(dataParam);
+				return standardList;
+			};
+		});
+	</script>
+
+</html>

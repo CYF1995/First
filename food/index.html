@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+
+	<body>
+		<div>
+			<button onclick="Bclick()">点击</button>
+
+			<div id="test">
+				<div>测试点击</div>
+				<div>
+					<input class="t" type="text" value="1" />
+					<input class="t" type="text" value="2"/>
+					<input class="t" type="text" value="3"/>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+	<script>
+		function Bclick() {
+			console.log("点击");
+		}
+		$(function() {
+			$.each($('#test'), function(index, item) {
+				console.log(item);
+				var dataType = $(item).children("input");
+				console.log(dataType);
+
+				$.each(dataType, function(index, item) {
+					console.log("对象",item);
+					console.log("值",$(item).val());
+				})
+			})
+		})
+	</script>
+
+</html>
